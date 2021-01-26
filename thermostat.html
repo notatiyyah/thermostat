@@ -9,28 +9,64 @@
   <script>
     $(document).ready(function(){
 
-      function check_if_power_saving() {
+      function update_power_saving() {
         if (thermostat.isPowerSavingOn() === true) { $('#power_indicator').css('background-color', 'green'); }
         else  {$('#power_indicator').css('background-color', 'red'); }
+        // sets indicator to red if power saving off and green if on
+      }
+
+      function update_temp(){
+        document.getElementById("temp").innerHTML = thermostat.temp();
+        // Sets display temp to the temperature from the thermostat object
+      }
+
+      function update_usage(){
+        switch (thermostat.usage()){
+          case "low-usage":
+          $('#usage_indicator').css('background-color', 'green');
+            break;
+          case "medium-usage":
+            $('#usage_indicator').css('background-color', 'orange');
+            break;
+          case "high-usage":
+            $('#usage_indicator').css('background-color', 'red');
+            break;
+        };
       }
 
       // ON LOAD :
       var thermostat = new Thermostat();
-      // Created thermostat object to use 
-      document.getElementById("temp").innerHTML = thermostat.temp();
-      // Sets display temp to the temperature from the thermostat object
-      check_if_power_saving();
-      
-
+      // Created thermostat object to use
+      update_temp();
+      update_power_saving();
+      update_usage();
+    
       // BUTTON FUNCTIONS
       $("#ps_on").click(function(){
         thermostat.turnOnPowerSaving();
-        check_if_power_saving();
+        update_power_saving();
       });
       
       $("#ps_off").click(function(){
         thermostat.turnOffPowerSaving();
-        check_if_power_saving();
+        update_power_saving();
+      });
+
+      $("#temp_up").click(function(){
+        thermostat.increaseBy(1);
+        update_temp();
+        update_usage();
+      });
+
+      $("#temp_down").click(function(){
+        thermostat.decreaseBy(1);
+        update_usage();
+        update_temp();
+      });
+
+      $("#reset").click(function(){
+        thermostat.reset();
+        update_temp();
       });
 
     });
@@ -40,12 +76,13 @@
     <h1>Thermostat</h1>
     <h3>Current temperature: <span id="temp"></span></h3>
     <h3>Power Saving mode: </h3>
-    <div id="power_indicator" style="position: relative; width: 200px; height: 200px; background-color: white; border: 1px solid #dddddd;"></div>
+    <div id="power_indicator" style="position: relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
     <h3>Usage: </h3>
-    <div id="usage_indicator" style="position: relative; width: 200px; height: 200px; background-color: white; border: 1px solid #dddddd;"></div>
+    <div id="usage_indicator" style="position: relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
     <button id="ps_on">Turn On Power Saving</button>
     <button id="ps_off">Turn Off Power Saving</button>
-    <button>Increase Temperature</button>
-    <button>Decrease Temperature</button>
+    <button id="temp_up">Increase Temperature</button>
+    <button id="temp_down">Decrease Temperature</button>
+    <button id="reset">Reset</button>
   </body>
 </html>
