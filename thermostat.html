@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Thermostat</title>
+    <script src="src/Thermostat.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <script>
+    $(document).ready(function(){
+
+      function check_if_power_saving() {
+        if (thermostat.isPowerSavingOn() === true) { $('#power_indicator').css('background-color', 'green'); }
+        else  {$('#power_indicator').css('background-color', 'red'); }
+      }
+
+      // ON LOAD :
+      var thermostat = new Thermostat();
+      // Created thermostat object to use 
+      document.getElementById("temp").innerHTML = thermostat.temp();
+      // Sets display temp to the temperature from the thermostat object
+      check_if_power_saving();
+      
+
+      // BUTTON FUNCTIONS
+      $("#ps_on").click(function(){
+        thermostat.turnOnPowerSaving();
+        check_if_power_saving();
+      });
+      
+      $("#ps_off").click(function(){
+        thermostat.turnOffPowerSaving();
+        check_if_power_saving();
+      });
+
+    });
+
+  </script>
+  <body>
+    <h1>Thermostat</h1>
+    <h3>Current temperature: <span id="temp"></span></h3>
+    <h3>Power Saving mode: </h3>
+    <div id="power_indicator" style="position: relative; width: 200px; height: 200px; background-color: white; border: 1px solid #dddddd;"></div>
+    <h3>Usage: </h3>
+    <div id="usage_indicator" style="position: relative; width: 200px; height: 200px; background-color: white; border: 1px solid #dddddd;"></div>
+    <button id="ps_on">Turn On Power Saving</button>
+    <button id="ps_off">Turn Off Power Saving</button>
+    <button>Increase Temperature</button>
+    <button>Decrease Temperature</button>
+  </body>
+</html>
