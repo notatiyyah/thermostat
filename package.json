@@ -1,0 +1,22 @@
+{
+  "name": "thermostat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/notatiyyah/thermostat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/notatiyyah/thermostat/issues"
+  },
+  "homepage": "https://github.com/notatiyyah/thermostat#readme"
+}

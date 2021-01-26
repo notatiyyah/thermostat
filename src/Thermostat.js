@@ -7,6 +7,7 @@ class Thermostat {
   }
 
   temp(){ return this.temperature; }
+  reset(){ this.temperature = 20; }
 
   isPowerSavingOn() { return (this.max_temp == 25 ? true : false ); }
   turnOnPowerSaving() { this.max_temp = 25; }
@@ -20,6 +21,13 @@ class Thermostat {
   decreaseBy(num){
     this.temperature -= num;
     if (this.temperature < this.min_temp) {this.temperature = this.min_temp};
+  }
+
+  usage() {
+    console.info(this.temperature);
+    if (this.temperature < 18){ return "low-usage";}
+    else if (this.temperature < 26){ return "medium-usage";} 
+    else if (this.temperature > 25) { return "high-usage";}
   }
 
 }

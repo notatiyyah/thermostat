@@ -48,4 +48,21 @@ describe("Thermostat", function() {
     expect(thermostat.temp()).toBe(32);
   });
 
+  it("can reset temperature", function(){
+    thermostat.increaseBy(5);
+    expect(thermostat.temp()).toBe(25);
+    thermostat.reset()
+    expect(thermostat.temp()).toBe(20);
+  });
+
+  it("can return energy usage", function(){
+    thermostat.decreaseBy(3); // temp is 17
+    expect(thermostat.usage()).toBe("low-usage");
+    thermostat.increaseBy(6); // temp is 23
+    expect(thermostat.usage()).toBe("medium-usage");
+    thermostat.turnOffPowerSaving()
+    thermostat.increaseBy(3); // temp is 26
+    expect(thermostat.usage()).toBe("high-usage");
+  });
+
 });
