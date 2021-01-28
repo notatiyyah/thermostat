@@ -5,70 +5,69 @@
     <title>Thermostat</title>
     <script src="src/Thermostat.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="src/style.css"></link>
   </head>
   <script>
     $(document).ready(function(){
 
-      function update_power_saving() {
-        if (thermostat.isPowerSavingOn() === true) { $('#power_indicator').css('background-color', 'green'); }
-        else  {$('#power_indicator').css('background-color', 'red'); }
+      function updatePowerSaving() {
+        $("#power_indicator").css("background-color", `${thermostat.isPowerSavingOn() ? "green" : "red" }` ); 
         // sets indicator to red if power saving off and green if on
       }
 
-      function update_temp(){
+      function updateTemp(){
         $("#temp_view").val(thermostat.temp())
         $("#temp").html(thermostat.temp())
         // Sets display temp to the temperature from the thermostat object
       }
 
-      function update_usage(){
+      function updateUsage(){
+        var colour = ""
         switch (thermostat.usage()){
           case "low-usage":
-          $('#usage_indicator').css('background-color', 'green');
+            colour = "green"
             break;
           case "medium-usage":
-            $('#usage_indicator').css('background-color', 'orange');
+            colour = "orange";
             break;
           case "high-usage":
-            $('#usage_indicator').css('background-color', 'red');
+            colour = "red";
             break;
         };
+        $("#usage_indicator").css("background-color", `${colour}`);
       }
+
+      function updateAll() {
+        updateTemp();
+        updatePowerSaving();
+        updateUsage();
+      };
 
       // ON LOAD :
       var thermostat = new Thermostat();
       // Created thermostat object to use
-      update_temp();
-      update_power_saving();
-      update_usage();
+      updateAll();
     
       // BUTTON FUNCTIONS
-      $("#ps_on").click(function(){
-        thermostat.turnOnPowerSaving();
-        update_power_saving();
-      });
-      
-      $("#ps_off").click(function(){
-        thermostat.turnOffPowerSaving();
-        update_power_saving();
+
+      $("#ps").click(function(){
+        thermostat.togglePowerSaving();
       });
 
-      $("#temp_up").click(function(){
+      $("#up.temp").click(function(){
         thermostat.increaseBy(1);
-        update_temp();
-        update_usage();
       });
 
-      $("#temp_down").click(function(){
+      $("#down.temp").click(function(){
         thermostat.decreaseBy(1);
-        update_usage();
-        update_temp();
       });
 
       $("#reset").click(function(){
         thermostat.reset();
-        update_temp();
       });
+
+      $(":button").click(function(){ updateAll(); });
+      // Update all after any button is pressed
 
     });
 
@@ -85,12 +84,14 @@
     </meter>
     <br/>
     <label for="power_indicator">Power Saving mode: </label>
-    <div id="power_indicator" style="position: inline-relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
-    <label for="usage_indicator">Usage: </label>
-    <div id="usage_indicator" style="position: inline-relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
-    <button id="ps_on">Turn On Power Saving</button>
-    <button id="temp_up">Increase Temperature</button>
-    <button id="temp_down">Decrease Temperature</button>
-    <button id="reset">Reset</button>
+    <div class="led" id="power_indicator"></div>
+    <label for="usage_indicator">Usage:</label>
+    <div class="led" id="usage_indicator"></div>
+    <div id="buttons">
+      <button id="ps">Power Saving</button>
+      <button class="temp" id="up">+</button>
+      <button class= "temp" id="down">-</button>
+      <button id="reset">Reset</button>
+    </div>
   </body>
 </html>
