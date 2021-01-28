@@ -26,7 +26,7 @@ class Thermostat {
   usage() {
     console.info(this.temperature);
     if (this.temperature < 18){ return "low-usage";}
-    else if (this.temperature < 26){ return "medium-usage";} 
+    else if (this.temperature <= 25){ return "medium-usage";} 
     else if (this.temperature > 25) { return "high-usage";}
   }
 

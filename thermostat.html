@@ -16,7 +16,8 @@
       }
 
       function update_temp(){
-        document.getElementById("temp").innerHTML = thermostat.temp();
+        $("#temp_view").val(thermostat.temp())
+        $("#temp").html(thermostat.temp())
         // Sets display temp to the temperature from the thermostat object
       }
 
@@ -74,13 +75,20 @@
   </script>
   <body>
     <h1>Thermostat</h1>
-    <h3>Current temperature: <span id="temp"></span></h3>
-    <h3>Power Saving mode: </h3>
-    <div id="power_indicator" style="position: relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
-    <h3>Usage: </h3>
-    <div id="usage_indicator" style="position: relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
+    
+    <label for="temp_view">Current temperature: <span id="temp"></span>°C</label>
+    <br/>
+    <meter id="temp_view"
+          min="10" max="32"
+          low="18" high="26" optimum="20"
+          value="20">
+    </meter>
+    <br/>
+    <label for="power_indicator">Power Saving mode: </label>
+    <div id="power_indicator" style="position: inline-relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
+    <label for="usage_indicator">Usage: </label>
+    <div id="usage_indicator" style="position: inline-relative; width: 50px; height: 50px; background-color: white; border: 1px solid #dddddd;"></div>
     <button id="ps_on">Turn On Power Saving</button>
-    <button id="ps_off">Turn Off Power Saving</button>
     <button id="temp_up">Increase Temperature</button>
     <button id="temp_down">Decrease Temperature</button>
     <button id="reset">Reset</button>
