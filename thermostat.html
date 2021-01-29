@@ -5,7 +5,8 @@
     <title>Thermostat</title>
     <script src="src/Thermostat.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="src/style.css"></link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="src/style.css">
   </head>
   <script>
     $(document).ready(function(){
@@ -41,12 +42,21 @@
         updateTemp();
         updatePowerSaving();
         updateUsage();
-      };
+      }
+
+      function getWeather(city){
+        var apiToken = "8d2b22130fc8aff659d254bf07cd5349";
+        $.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiToken}&units=metric`, function(data){
+          $("#weather").html(data.weather[0].main);
+          $("#weatherTemp").html(data.main.temp);
+        });
+      }
 
       // ON LOAD :
       var thermostat = new Thermostat();
       // Created thermostat object to use
       updateAll();
+      getWeather("London")
     
       // BUTTON FUNCTIONS
 
@@ -73,25 +83,35 @@
 
   </script>
   <body>
-    <h1>Thermostat</h1>
-    
-    <label for="temp_view">Current temperature: <span id="temp"></span>°C</label>
-    <br/>
-    <meter id="temp_view"
-          min="10" max="32"
-          low="18" high="26" optimum="20"
-          value="20">
-    </meter>
-    <br/>
-    <label for="power_indicator">Power Saving mode: </label>
-    <div class="led" id="power_indicator"></div>
-    <label for="usage_indicator">Usage:</label>
-    <div class="led" id="usage_indicator"></div>
-    <div id="buttons">
-      <button id="ps">Power Saving</button>
-      <button class="temp" id="up">+</button>
-      <button class= "temp" id="down">-</button>
-      <button id="reset">Reset</button>
+    <div id="main">
+      <div class="content">
+        <h1>Thermostat</h1>
+        <p>Current weather: <span id="weather"></span>, <span id="weatherTemp"></span>°C</p>
+        <label id="current_temp" for="temp_view">House temperature: <span id="temp"></span>°C</label><br/>
+        <meter id="temp_view"
+              min="10" max="32"
+              low="18" high="26" optimum="20"
+              value="20">
+        </meter><br/>
+        <div id="temp_controls">
+          <button class= "temp" id="down">-</button>
+          <button class="temp" id="up">+</button>
+        </div>
+        <button class="btn btn-dark" id="reset">Reset</button>
+      </div>
+    </div>
+    <div id="sidebar">
+      <div class="content">
+        <div class="indicator">
+          <label for="usage_indicator">Usage:</label>
+          <div class="led" id="usage_indicator"></div>
+        </div>
+        <div class="indicator">
+          <label for="power_indicator">Power Saving mode: </label>
+          <div class="led" id="power_indicator"></div>
+        </div>
+        <button id="ps">Toggle</button>
+      </div>
     </div>
   </body>
 </html>

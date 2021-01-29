@@ -11,8 +11,8 @@ class Thermostat {
 
   isPowerSavingOn() { return this.max_temp === 25; }
   togglePowerSaving(){ this.isPowerSavingOn() ? this.turnOffPowerSaving() : this.turnOnPowerSaving(); }
-  turnOnPowerSaving() { this.max_temp = 25; }
-  turnOffPowerSaving() { this.max_temp = 32; }
+  turnOnPowerSaving() { this.max_temp = 25; this.reset(); }
+  turnOffPowerSaving() { this.max_temp = 32; this.reset(); }
 
   increaseBy(num){ 
     this.temperature += num;

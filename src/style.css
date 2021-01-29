@@ -1,7 +1,78 @@
+label{
+  font-size: large;
+}
+
+p{
+  font-style: italic;
+}
+
+#main{
+  margin-right: 29%; /* Same as the width of the sidebar */
+  text-align: center;
+}
+
+.content{
+  margin-top: 30vh;
+  padding: 20px;
+  text-align: center;
+  background-color: white;
+  width: fit-content;
+  display: inline-block;
+  border-radius: 10%;
+}
+
+#current_temp{
+  font-size: medium;
+  font-style: italic;
+  color: gray;
+  font-weight: lighter;
+}
+
+#temp_view{
+ height: 50px;
+ width: 200px; 
+}
+
+.temp{
+  background: none;
+  border: none;
+  padding: 5px;
+  margin: 5px;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+#reset{
+  margin: 20px;
+  background-color: black;
+  color: white;
+  font-size: medium;
+}
+
+#sidebar{
+  height: 100%;
+  width: 29%;
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  right: 0;
+  background-color: #f0f0f0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  text-align: center;
+}
+
+.indicator{
+  padding: 5px;
+}
+
+#ps{
+  margin: 10px;
+}
+
 .led{
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 15px;
+  height: 15px;
   background-color: white;
   border: 1px solid #dddddd;
 }
