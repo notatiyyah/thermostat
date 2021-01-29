@@ -6,6 +6,10 @@ p{
   font-style: italic;
 }
 
+h1{
+  margin-top: 30px;
+}
+
 #main{
   margin-right: 29%; /* Same as the width of the sidebar */
   text-align: center;
@@ -21,11 +25,17 @@ p{
   border-radius: 10%;
 }
 
+#thermostat{
+  border: 10px solid;
+  border-radius: 50%;
+}
+
 #current_temp{
   font-size: medium;
   font-style: italic;
   color: gray;
   font-weight: lighter;
+  margin-bottom: 10px;
 }
 
 #temp_view{
@@ -56,7 +66,7 @@ p{
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
   right: 0;
-  background-color: #f0f0f0;
+  background-color: black;
   overflow-x: hidden; /* Disable horizontal scroll */
   text-align: center;
 }

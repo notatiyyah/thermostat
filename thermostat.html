@@ -23,19 +23,32 @@
       }
 
       function updateUsage(){
-        var colour = ""
+        var colours = [
+          { usageColour: "green",
+          thermColour: "#f0f8ff", // blue
+          borderCol: "#dcefff"},
+          { usageColour: "orange",
+          thermColour: "#f0fff7", // green
+          borderCol: "#dcffed"},
+          { usageColour: "red",
+          thermColour: "#fff0f8", // red
+          borderCol: "#ffdcef"}
+        ];
+        var option = 1
         switch (thermostat.usage()){
           case "low-usage":
-            colour = "green"
+              option = 0;
             break;
           case "medium-usage":
-            colour = "orange";
+            option = 1;
             break;
           case "high-usage":
-            colour = "red";
+            option = 2;
             break;
         };
-        $("#usage_indicator").css("background-color", `${colour}`);
+        $("#usage_indicator").css("background-color", `${colours[option].usageColour}`);
+        $("#thermostat").css("background-color", `${colours[option].thermColour}`);
+        $("#thermostat").css("border-color", `${colours[option].borderCol}`);
       }
 
       function updateAll() {
@@ -52,11 +65,16 @@
         });
       }
 
+      function fixCircle(){
+        $("#thermostat").width($("#thermostat").height());
+      }
+
       // ON LOAD :
       var thermostat = new Thermostat();
       // Created thermostat object to use
       updateAll();
       getWeather("London")
+      fixCircle();
     
       // BUTTON FUNCTIONS
 
@@ -84,7 +102,7 @@
   </script>
   <body>
     <div id="main">
-      <div class="content">
+      <div class="content" id='thermostat'>
         <h1>Thermostat</h1>
         <p>Current weather: <span id="weather"></span>, <span id="weatherTemp"></span>°C</p>
         <label id="current_temp" for="temp_view">House temperature: <span id="temp"></span>°C</label><br/>
