@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
     <title>Thermostat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="src/Thermostat.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="src/style.css">
+    <!-- External scripts/styles (Bootstrap & JQuery) -->  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
+
   <script>
     $(document).ready(function(){
 
@@ -62,12 +66,11 @@
         $.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiToken}&units=metric`, function(data){
           $("#weather").html(data.weather[0].main);
           $("#weatherTemp").html(data.main.temp);
+          $(".location").html(city)
         });
       }
 
-      function fixCircle(){
-        $("#thermostat").width($("#thermostat").height());
-      }
+      function fixCircle(){ $("#thermostat").width($("#thermostat").height()); }
 
       // ON LOAD :
       var thermostat = new Thermostat();
@@ -78,58 +81,96 @@
     
       // BUTTON FUNCTIONS
 
-      $("#ps").click(function(){
-        thermostat.togglePowerSaving();
-      });
+      $("#ps").click(function(){ thermostat.togglePowerSaving(); });
 
-      $("#up.temp").click(function(){
-        thermostat.increaseBy(1);
-      });
+      $("#up.temp").click(function(){ thermostat.increaseBy(1); });
 
-      $("#down.temp").click(function(){
-        thermostat.decreaseBy(1);
-      });
+      $("#down.temp").click(function(){ thermostat.decreaseBy(1); });
 
-      $("#reset").click(function(){
+      $("#reset").click(function(){ 
         thermostat.reset();
+        getWeather("London");
       });
 
       $(":button").click(function(){ updateAll(); });
       // Update all after any button is pressed
+      
+      $('[data-toggle="popover"]').popover();
+
+      $('#newLocation').submit(function () {
+        getWeather($("#city").val());
+        $("#closeModal").click();
+        return false;
+      });
+
 
     });
-
   </script>
+
   <body>
-    <div id="main">
-      <div class="content" id='thermostat'>
-        <h1>Thermostat</h1>
-        <p>Current weather: <span id="weather"></span>, <span id="weatherTemp"></span>°C</p>
-        <label id="current_temp" for="temp_view">House temperature: <span id="temp"></span>°C</label><br/>
-        <meter id="temp_view"
-              min="10" max="32"
-              low="18" high="26" optimum="20"
-              value="20">
-        </meter><br/>
-        <div id="temp_controls">
-          <button class= "temp" id="down">-</button>
-          <button class="temp" id="up">+</button>
+    <!-- Modal -->
+    <div class="modal fade" id="requestLocation" tabindex="-1" role="dialog" aria-labelledby="requestLocationTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="requestLocationLongTitle">Change location</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Current Location:  <span class="location"></span></p>
+            <p>To change location, type the name of the city you would like here:</p>
+            <form id="newLocation">
+              <input type="text" id="city" placeholder="Enter city name here">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" form="newLocation" class="btn btn-primary">Change city</button>
+          </div>
         </div>
-        <button class="btn btn-dark" id="reset">Reset</button>
       </div>
     </div>
-    <div id="sidebar">
-      <div class="content">
-        <div class="indicator">
-          <label for="usage_indicator">Usage:</label>
-          <div class="led" id="usage_indicator"></div>
+
+    <!-- Main page content -->
+    <div id="page">
+
+      <div id="main">
+        <div class="content" id='thermostat'>
+          <h1>Thermostat</h1>
+          <p>Current weather: <span id="weather"></span>, <span id="weatherTemp"></span>°C</p>
+          <a href="#" data-toggle="popover" data-trigger="hover" data-content="To change location, press 'change location' >> ">Current Location:  <span class="location"></span></a><br/>
+          <label id="current_temp" for="temp_view">House temperature: <span id="temp"></span>°C</label><br/>
+          <meter id="temp_view"
+                min="10" max="32"
+                low="18" high="26" optimum="20"
+                value="20">
+          </meter><br/>
+          <div id="temp_controls">
+            <button class= "temp" id="down">-</button>
+            <button class="temp" id="up">+</button>
+          </div>
+          <button id="reset" class="btn btn-dark" >Reset</button>
         </div>
-        <div class="indicator">
-          <label for="power_indicator">Power Saving mode: </label>
-          <div class="led" id="power_indicator"></div>
-        </div>
-        <button id="ps">Toggle</button>
       </div>
+
+      <div id="sidebar">
+        <div class="content">
+          <div class="indicator">
+            <label for="usage_indicator">Usage:</label>
+            <div class="led" id="usage_indicator"></div>
+          </div>
+          <div class="indicator">
+            <label for="power_indicator">Power Saving mode: </label>
+            <div class="led" id="power_indicator"></div>
+          </div>
+          <button id="ps" class="btn btn-light">Toggle</button><br/>
+          <!-- Button trigger modal -->
+          <button type="button" style="border: solid black 1px;" class="btn btn-light" data-toggle="modal" data-target="#requestLocation">Change Location</button>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>

@@ -35,7 +35,6 @@ h1{
   font-style: italic;
   color: gray;
   font-weight: lighter;
-  margin-bottom: 10px;
 }
 
 #temp_view{
@@ -47,7 +46,7 @@ h1{
   background: none;
   border: none;
   padding: 5px;
-  margin: 5px;
+  margin: 5px 0px 5px 0px;
   font-weight: bolder;
   font-size: larger;
 }
@@ -77,6 +76,7 @@ h1{
 
 #ps{
   margin: 10px;
+  border: solid black 1px;
 }
 
 .led{
